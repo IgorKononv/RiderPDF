@@ -10,6 +10,9 @@
 		6FAB4C062AAF805E00C2C28F /* FilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB4C052AAF805E00C2C28F /* FilesViewController.swift */; };
 		6FAB4C082AAF807D00C2C28F /* ToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB4C072AAF807D00C2C28F /* ToolsViewController.swift */; };
 		6FAB4C0A2AAF809A00C2C28F /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB4C092AAF809A00C2C28F /* AccountViewController.swift */; };
+		6FAB4C0D2AB051F900C2C28F /* PDFViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB4C0C2AB051F900C2C28F /* PDFViewCell.swift */; };
+		6FAB4C112AB0EC1D00C2C28F /* PDFCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB4C102AB0EC1D00C2C28F /* PDFCellModel.swift */; };
+		6FAB4C132AB0EC5B00C2C28F /* PDFViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB4C122AB0EC5B00C2C28F /* PDFViewerViewController.swift */; };
 		6FEA4CD72AAF712600C80C8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEA4CD62AAF712600C80C8F /* AppDelegate.swift */; };
 		6FEA4CD92AAF712600C80C8F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEA4CD82AAF712600C80C8F /* SceneDelegate.swift */; };
 		6FEA4CDB2AAF712600C80C8F /* RiderPDFTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEA4CDA2AAF712600C80C8F /* RiderPDFTabController.swift */; };
@@ -21,6 +24,9 @@
 		6FAB4C052AAF805E00C2C28F /* FilesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesViewController.swift; sourceTree = "<group>"; };
 		6FAB4C072AAF807D00C2C28F /* ToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsViewController.swift; sourceTree = "<group>"; };
 		6FAB4C092AAF809A00C2C28F /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
+		6FAB4C0C2AB051F900C2C28F /* PDFViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewCell.swift; sourceTree = "<group>"; };
+		6FAB4C102AB0EC1D00C2C28F /* PDFCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFCellModel.swift; sourceTree = "<group>"; };
+		6FAB4C122AB0EC5B00C2C28F /* PDFViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewerViewController.swift; sourceTree = "<group>"; };
 		6FEA4CD32AAF712600C80C8F /* RiderPDF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RiderPDF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FEA4CD62AAF712600C80C8F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6FEA4CD82AAF712600C80C8F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -53,11 +59,29 @@
 		6FAB4C042AAF803800C2C28F /* ViewComponents */ = {
 			isa = PBXGroup;
 			children = (
-				6FAB4C052AAF805E00C2C28F /* FilesViewController.swift */,
+				6FAB4C0B2AB051BB00C2C28F /* FilesViewController */,
 				6FAB4C072AAF807D00C2C28F /* ToolsViewController.swift */,
 				6FAB4C092AAF809A00C2C28F /* AccountViewController.swift */,
 			);
 			path = ViewComponents;
+			sourceTree = "<group>";
+		};
+		6FAB4C0B2AB051BB00C2C28F /* FilesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6FAB4C052AAF805E00C2C28F /* FilesViewController.swift */,
+				6FAB4C0C2AB051F900C2C28F /* PDFViewCell.swift */,
+				6FAB4C122AB0EC5B00C2C28F /* PDFViewerViewController.swift */,
+			);
+			path = FilesViewController;
+			sourceTree = "<group>";
+		};
+		6FAB4C0F2AB066C600C2C28F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6FAB4C102AB0EC1D00C2C28F /* PDFCellModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		6FEA4CCA2AAF712600C80C8F = {
@@ -82,6 +106,7 @@
 				6FEA4CD62AAF712600C80C8F /* AppDelegate.swift */,
 				6FEA4CD82AAF712600C80C8F /* SceneDelegate.swift */,
 				6FAB4C032AAF800F00C2C28F /* RiderPDFTab */,
+				6FAB4C0F2AB066C600C2C28F /* Models */,
 				6FEA4CDF2AAF712700C80C8F /* Assets.xcassets */,
 				6FEA4CE12AAF712700C80C8F /* LaunchScreen.storyboard */,
 				6FEA4CE42AAF712700C80C8F /* Info.plist */,
@@ -159,8 +184,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FAB4C132AB0EC5B00C2C28F /* PDFViewerViewController.swift in Sources */,
+				6FAB4C112AB0EC1D00C2C28F /* PDFCellModel.swift in Sources */,
 				6FEA4CDB2AAF712600C80C8F /* RiderPDFTabController.swift in Sources */,
 				6FAB4C082AAF807D00C2C28F /* ToolsViewController.swift in Sources */,
+				6FAB4C0D2AB051F900C2C28F /* PDFViewCell.swift in Sources */,
 				6FAB4C0A2AAF809A00C2C28F /* AccountViewController.swift in Sources */,
 				6FEA4CD72AAF712600C80C8F /* AppDelegate.swift in Sources */,
 				6FAB4C062AAF805E00C2C28F /* FilesViewController.swift in Sources */,
