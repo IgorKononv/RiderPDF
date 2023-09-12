@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import PDFKit
 
-final class PDFViewerViewController: UIViewController {
+final class PDFViewerViewController: UIViewController, PDFViewDelegate {
     var cellModel: PDFCellModel?
     let pdfView = PDFView()
     
@@ -43,7 +43,35 @@ final class PDFViewerViewController: UIViewController {
     }
     
     private func setUpPDFView() {
-        pdfView.document = PDFDocument()
+        guard let url = Bundle.main.url(forResource: "Igor_Kononov", withExtension: "pdf") else { return }
+        guard let document = PDFDocument(url: url) else { return }
+        
+        pdfView.document = document
+        pdfView.frame = view.bounds
+        pdfView.usePageViewController(true)
+        pdfView.autoScales = true
+        pdfView.delegate = self
+        
+        setUpThumbnailView(pdfView)
+    }
+    
+    private func setUpThumbnailView(_ pdfView: PDFView) {
+        let thumbnailView = PDFThumbnailView()
+        thumbnailView.translatesAutoresizingMaskIntoConstraints = false
+        pdfView.addSubview(thumbnailView)
+        thumbnailView.pdfView = pdfView
+        
+        NSLayoutConstraint.activate([
+            thumbnailView.leadingAnchor.constraint(equalTo: pdfView.safeAreaLayoutGuide.leadingAnchor),
+            thumbnailView.trailingAnchor.constraint(equalTo: pdfView.safeAreaLayoutGuide.trailingAnchor),
+            thumbnailView.bottomAnchor.constraint(equalTo: pdfView.safeAreaLayoutGuide.bottomAnchor),
+            thumbnailView.heightAnchor.constraint(equalToConstant: 60)
+        ])
+        
+        thumbnailView.thumbnailSize = CGSize(width: 50, height: 80)
+        thumbnailView.layoutMode = .horizontal
+        thumbnailView.backgroundColor = .gray
+
     }
     
     @objc private func closeButtonTapped() {

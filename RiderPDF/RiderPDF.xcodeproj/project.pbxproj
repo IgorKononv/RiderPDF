@@ -13,6 +13,7 @@
 		6FAB4C0D2AB051F900C2C28F /* PDFViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB4C0C2AB051F900C2C28F /* PDFViewCell.swift */; };
 		6FAB4C112AB0EC1D00C2C28F /* PDFCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB4C102AB0EC1D00C2C28F /* PDFCellModel.swift */; };
 		6FAB4C132AB0EC5B00C2C28F /* PDFViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAB4C122AB0EC5B00C2C28F /* PDFViewerViewController.swift */; };
+		6FAB4C152AB1043A00C2C28F /* Igor_Kononov.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 6FAB4C142AB1043A00C2C28F /* Igor_Kononov.pdf */; };
 		6FEA4CD72AAF712600C80C8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEA4CD62AAF712600C80C8F /* AppDelegate.swift */; };
 		6FEA4CD92AAF712600C80C8F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEA4CD82AAF712600C80C8F /* SceneDelegate.swift */; };
 		6FEA4CDB2AAF712600C80C8F /* RiderPDFTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEA4CDA2AAF712600C80C8F /* RiderPDFTabController.swift */; };
@@ -27,6 +28,7 @@
 		6FAB4C0C2AB051F900C2C28F /* PDFViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewCell.swift; sourceTree = "<group>"; };
 		6FAB4C102AB0EC1D00C2C28F /* PDFCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFCellModel.swift; sourceTree = "<group>"; };
 		6FAB4C122AB0EC5B00C2C28F /* PDFViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewerViewController.swift; sourceTree = "<group>"; };
+		6FAB4C142AB1043A00C2C28F /* Igor_Kononov.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Igor_Kononov.pdf; sourceTree = "<group>"; };
 		6FEA4CD32AAF712600C80C8F /* RiderPDF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RiderPDF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FEA4CD62AAF712600C80C8F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6FEA4CD82AAF712600C80C8F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 		6FEA4CCA2AAF712600C80C8F = {
 			isa = PBXGroup;
 			children = (
+				6FAB4C142AB1043A00C2C28F /* Igor_Kononov.pdf */,
 				6FEA4CD52AAF712600C80C8F /* RiderPDF */,
 				6FEA4CD42AAF712600C80C8F /* Products */,
 			);
@@ -172,6 +175,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FAB4C152AB1043A00C2C28F /* Igor_Kononov.pdf in Resources */,
 				6FEA4CE32AAF712700C80C8F /* LaunchScreen.storyboard in Resources */,
 				6FEA4CE02AAF712700C80C8F /* Assets.xcassets in Resources */,
 			);
