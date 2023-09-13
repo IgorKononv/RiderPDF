@@ -7,9 +7,9 @@
 
 import Foundation
 import UIKit
+import PDFKit
 
 final class FilesViewController: UIViewController, PDFViewCellDelegate {
-    
     
     private let titleLabel = UILabel()
     private let bellButton = UIButton()
@@ -17,10 +17,9 @@ final class FilesViewController: UIViewController, PDFViewCellDelegate {
     private let searchBar = UISearchBar()
     private var collectionView: UICollectionView!
     private var dataSource: UICollectionViewDiffableDataSource<Section, PDFCellModel>!
+    private let addButton = UIButton()
 
-    private var sections = [PDFCellModel(image: "square.and.arrow.up", name: "first", size: "10 mb."),
-                    PDFCellModel(image: "square.and.arrow.up", name: "second", size: "20 mb."),
-                    PDFCellModel(image: "square.and.arrow.up", name: "third", size: "30 mb.")]
+    private var sections: [PDFCellModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +27,7 @@ final class FilesViewController: UIViewController, PDFViewCellDelegate {
         setUpHeaderComponents()
         setUpSearchBar()
         setUpCollectionView()
+        setUpAddButton()
         createDataSource()
         reloadData()
 
@@ -94,9 +94,29 @@ final class FilesViewController: UIViewController, PDFViewCellDelegate {
         view.endEditing(true)
     }
     
+    private func setUpAddButton() {
+        addButton.setBackgroundImage(UIImage(named: "add_PDF_Image"), for: .normal)
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(addButton)
+        addButton.addTarget(self, action: #selector(addButtonTap), for: .touchUpInside)
+
+        NSLayoutConstraint.activate([
+            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16.0),
+            addButton.heightAnchor.constraint(equalToConstant: 60),
+            addButton.widthAnchor.constraint(equalToConstant: 60),
+            addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10.0)
+        ])
+    }
+    
+    @objc private func addButtonTap(_ sender: UITapGestureRecognizer) {
+        let documentPicker = UIDocumentPickerViewController(documentTypes: ["com.adobe.pdf"], in: .import)
+           documentPicker.delegate = self
+           present(documentPicker, animated: true, completion: nil)
+    }
+    
     private func setUpCollectionView() {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = .init(width: view.frame.width / 3 - 8, height: 155)
+        layout.itemSize = .init(width: view.frame.width / 3 - 8, height: 200)
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -132,14 +152,14 @@ final class FilesViewController: UIViewController, PDFViewCellDelegate {
     }
     
     func didSelectСellImage(_ item: PDFCellModel?) {
-        let pdfViewerVC = PDFViewerViewController()
+        let pdfViewerVC = PDFRidingViewController()
         pdfViewerVC.cellModel = item
         pdfViewerVC.modalPresentationStyle = .fullScreen
         self.present(pdfViewerVC, animated: true, completion: nil)
     }
     
     func didSelectСellDots(_ item: PDFCellModel?) {
-        let pdfViewerVC = PDFViewerViewController()
+        let pdfViewerVC = PDFRidingViewController()
         pdfViewerVC.cellModel = item
         pdfViewerVC.modalPresentationStyle = .fullScreen
         self.present(pdfViewerVC, animated: true, completion: nil)
@@ -149,5 +169,33 @@ final class FilesViewController: UIViewController, PDFViewCellDelegate {
 private extension FilesViewController {
     enum Section {
         case main
+    }
+}
+
+
+extension FilesViewController: UIDocumentPickerDelegate {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        if let url = urls.first {
+
+            if let pdfDocument = PDFDocument(url: url),
+               let pdfPage = pdfDocument.page(at: 0) {
+                
+                let pdfPageImage = pdfPage.thumbnail(of: CGSize(width: 150, height: 300), for: .mediaBox)
+                let fileName = url.lastPathComponent
+                
+                do {
+                    let fileAttributes = try FileManager.default.attributesOfItem(atPath: url.path)
+                    if let fileSize = fileAttributes[.size] as? Int64 {
+                        let fileSizeString = ByteCountFormatter.string(fromByteCount: fileSize, countStyle: .file)
+                        
+                        sections.append(PDFCellModel(image: pdfPageImage, name: fileName, size: fileSizeString, pdfPath: url))
+                        
+                        reloadData()
+                    }
+                } catch {
+                    print("pdf: - \(error)")
+                }
+            }
+        }
     }
 }

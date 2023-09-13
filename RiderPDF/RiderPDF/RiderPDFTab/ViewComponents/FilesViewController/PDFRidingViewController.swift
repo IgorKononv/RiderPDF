@@ -1,5 +1,5 @@
 //
-//  PDFViewerViewController.swift
+//  PDFRidingViewController.swift
 //  RiderPDF
 //
 //  Created by Igor Kononov on 12.09.2023.
@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import PDFKit
 
-final class PDFViewerViewController: UIViewController, PDFViewDelegate {
+final class PDFRidingViewController: UIViewController, PDFViewDelegate {
     var cellModel: PDFCellModel?
     let pdfView = PDFView()
     
@@ -43,8 +43,8 @@ final class PDFViewerViewController: UIViewController, PDFViewDelegate {
     }
     
     private func setUpPDFView() {
-        guard let url = Bundle.main.url(forResource: "Igor_Kononov", withExtension: "pdf") else { return }
-        guard let document = PDFDocument(url: url) else { return }
+        guard let cellModel = cellModel else { return }
+        guard let document = PDFDocument(url: cellModel.pdfPath) else { return }
         
         pdfView.document = document
         pdfView.frame = view.bounds

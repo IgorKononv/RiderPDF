@@ -10,7 +10,8 @@ import UIKit
 
 struct PDFCellModel: Hashable {
     let id = UUID()
-    let image: String
+    let image: UIImage
     let name: String
     let size: String
+    let pdfPath: URL
 }

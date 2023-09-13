@@ -51,8 +51,9 @@ final class PDFViewCell: UICollectionViewCell {
             imageButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
             imageButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             imageButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-            imageButton.heightAnchor.constraint(equalToConstant: 65)
         ])
+        
+        imageButton.heightAnchor.constraint(equalTo: imageButton.widthAnchor, multiplier: 1.0).isActive = true
     }
     
     private func setUpCellLabel() {
@@ -95,7 +96,7 @@ final class PDFViewCell: UICollectionViewCell {
         cellModel = item
         cellLabel.text = item.name
         fileSizeLabel.text = item.size
-        imageButton.setBackgroundImage(UIImage(systemName: cellModel?.image ?? ""), for: .normal)
+        imageButton.setBackgroundImage(cellModel?.image, for: .normal)
     }
     
     @objc private func buttonDotsTapped(_ sender: UIButton) {
