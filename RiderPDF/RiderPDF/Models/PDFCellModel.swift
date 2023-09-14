@@ -9,9 +9,10 @@ import Foundation
 import UIKit
 
 struct PDFCellModel: Hashable {
-    let id = UUID()
+    let id: String
     let image: UIImage
     let name: String
     let size: String
-    let pdfPath: URL
+    let dateCreated: Date
+    let dataPDF: Data
 }

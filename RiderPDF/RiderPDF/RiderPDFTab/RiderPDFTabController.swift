@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 final class RiderPDFTabController: UITabBarController {
 
@@ -14,7 +15,6 @@ final class RiderPDFTabController: UITabBarController {
         setUpTabs()
         setUpColors()
         addTopShadow()
-
     }
     
     private func setUpColors() {
@@ -39,6 +39,7 @@ final class RiderPDFTabController: UITabBarController {
         let nav = UINavigationController(rootViewController: vc)
         nav.tabBarItem.title = title
         nav.tabBarItem.image = UIImage(systemName: image)
+        
         return nav
     }
     

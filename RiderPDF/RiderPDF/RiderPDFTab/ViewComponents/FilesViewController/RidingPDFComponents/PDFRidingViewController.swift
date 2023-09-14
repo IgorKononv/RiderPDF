@@ -44,7 +44,7 @@ final class PDFRidingViewController: UIViewController, PDFViewDelegate {
     
     private func setUpPDFView() {
         guard let cellModel = cellModel else { return }
-        guard let document = PDFDocument(url: cellModel.pdfPath) else { return }
+        guard let document = PDFDocument(data: cellModel.dataPDF) else { return }
         
         pdfView.document = document
         pdfView.frame = view.bounds
@@ -65,10 +65,10 @@ final class PDFRidingViewController: UIViewController, PDFViewDelegate {
             thumbnailView.leadingAnchor.constraint(equalTo: pdfView.safeAreaLayoutGuide.leadingAnchor),
             thumbnailView.trailingAnchor.constraint(equalTo: pdfView.safeAreaLayoutGuide.trailingAnchor),
             thumbnailView.bottomAnchor.constraint(equalTo: pdfView.safeAreaLayoutGuide.bottomAnchor),
-            thumbnailView.heightAnchor.constraint(equalToConstant: 60)
+            thumbnailView.heightAnchor.constraint(equalToConstant: 80)
         ])
         
-        thumbnailView.thumbnailSize = CGSize(width: 50, height: 80)
+        thumbnailView.thumbnailSize = CGSize(width: 30, height: 80)
         thumbnailView.layoutMode = .horizontal
         thumbnailView.backgroundColor = .gray
 

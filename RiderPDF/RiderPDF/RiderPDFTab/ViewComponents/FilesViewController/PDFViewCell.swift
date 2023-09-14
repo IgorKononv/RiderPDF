@@ -44,21 +44,21 @@ final class PDFViewCell: UICollectionViewCell {
     private func setUpImageButton() {
         imageButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(imageButton)
-        imageButton.imageView?.contentMode = .scaleAspectFit
         imageButton.addTarget(self, action: #selector(self.buttonImageTapped(_:)), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            imageButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-            imageButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            imageButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            imageButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
+            imageButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            imageButton.widthAnchor.constraint(equalToConstant: 70),
+            imageButton.heightAnchor.constraint(equalToConstant: 100)
+
         ])
-        
-        imageButton.heightAnchor.constraint(equalTo: imageButton.widthAnchor, multiplier: 1.0).isActive = true
     }
     
     private func setUpCellLabel() {
         cellLabel.translatesAutoresizingMaskIntoConstraints = false
         cellLabel.textAlignment = .center
+        cellLabel.numberOfLines = 2
         addSubview(cellLabel)
         
         NSLayoutConstraint.activate([
@@ -71,12 +71,14 @@ final class PDFViewCell: UICollectionViewCell {
     private func setUpFileSizeLabel() {
         fileSizeLabel.translatesAutoresizingMaskIntoConstraints = false
         fileSizeLabel.textAlignment = .center
+        fileSizeLabel.textColor = UIColor.gray
+        fileSizeLabel.font = UIFont.systemFont(ofSize: 11)
         addSubview(fileSizeLabel)
         
         NSLayoutConstraint.activate([
             fileSizeLabel.topAnchor.constraint(equalTo: cellLabel.bottomAnchor, constant: 5),
-            fileSizeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            fileSizeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
+            fileSizeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 3),
+            fileSizeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -3)
         ])
     }
     private func setUpFileDotsButton() {
@@ -95,8 +97,17 @@ final class PDFViewCell: UICollectionViewCell {
     func comonInit(item: PDFCellModel) {
         cellModel = item
         cellLabel.text = item.name
-        fileSizeLabel.text = item.size
+        fileSizeLabel.text = formatDateAndSize(item)
         imageButton.setBackgroundImage(cellModel?.image, for: .normal)
+    }
+    
+    private func formatDateAndSize(_ item: PDFCellModel) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+
+        let formattedDate = dateFormatter.string(from: item.dateCreated)
+
+        return formattedDate + " • " + item.size
     }
     
     @objc private func buttonDotsTapped(_ sender: UIButton) {

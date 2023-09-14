@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import PDFKit
 
-final class FilesViewController: UIViewController, PDFViewCellDelegate {
+final class FilesViewController: UIViewController, PDFViewCellDelegate, OptionControllerDelegate {
     
     private let titleLabel = UILabel()
     private let bellButton = UIButton()
@@ -20,7 +20,9 @@ final class FilesViewController: UIViewController, PDFViewCellDelegate {
     private let addButton = UIButton()
 
     private var sections: [PDFCellModel] = []
-    
+    private var filteredSections: [PDFCellModel] = []
+    private let realmService: RealmServiceProviding = RealmServiceProvider()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -30,7 +32,7 @@ final class FilesViewController: UIViewController, PDFViewCellDelegate {
         setUpAddButton()
         createDataSource()
         reloadData()
-
+        getAllPDFFilesFomRealm()
     }
     
     private func setUpHeaderComponents() {
@@ -82,6 +84,8 @@ final class FilesViewController: UIViewController, PDFViewCellDelegate {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         view.addGestureRecognizer(tapGesture)
+        
+        searchBar.delegate = self
         
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16.0),
@@ -147,8 +151,16 @@ final class FilesViewController: UIViewController, PDFViewCellDelegate {
     private func reloadData() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, PDFCellModel>()
         snapshot.appendSections([.main])
-        snapshot.appendItems(sections)
+        snapshot.appendItems(filteredSections)
         dataSource?.apply(snapshot, animatingDifferences: false)
+    }
+    
+    private func getAllPDFFilesFomRealm() {
+        for items in realmService.getAllItemsObjects() {
+            sections.append(items)
+            filteredSections.append(items)
+        }
+        reloadData()
     }
     
     func didSelectСellImage(_ item: PDFCellModel?) {
@@ -159,10 +171,26 @@ final class FilesViewController: UIViewController, PDFViewCellDelegate {
     }
     
     func didSelectСellDots(_ item: PDFCellModel?) {
-        let pdfViewerVC = PDFRidingViewController()
-        pdfViewerVC.cellModel = item
-        pdfViewerVC.modalPresentationStyle = .fullScreen
-        self.present(pdfViewerVC, animated: true, completion: nil)
+        let pdfOptionsVC = PDFOptionsViewController()
+        pdfOptionsVC.cellModel = item
+        pdfOptionsVC.delegate = self
+        pdfOptionsVC.modalPresentationStyle = .formSheet
+        
+        if let sheet = pdfOptionsVC.sheetPresentationController {
+            sheet.detents = [.custom(resolver: { context in
+                600.0
+            }), .large()]
+        }
+        self.present(pdfOptionsVC, animated: true, completion: nil)
+    }
+    
+    func deletePDF(cellModel: PDFCellModel?) {
+        guard let cellModel = cellModel else { return }
+        filteredSections.removeAll(where: { $0.id == cellModel.id })
+        sections.removeAll(where: { $0.id == cellModel.id })
+
+        realmService.deleteItemModel(item: cellModel)
+        reloadData()
     }
 }
 
@@ -176,11 +204,8 @@ private extension FilesViewController {
 extension FilesViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         if let url = urls.first {
-
-            if let pdfDocument = PDFDocument(url: url),
-               let pdfPage = pdfDocument.page(at: 0) {
-                
-                let pdfPageImage = pdfPage.thumbnail(of: CGSize(width: 150, height: 300), for: .mediaBox)
+            if let pdfDocument = PDFDocument(url: url), let pdfPage = pdfDocument.page(at: 0) {
+                let pdfPageImage = pdfPage.thumbnail(of: CGSize(width: 70, height: 100), for: .mediaBox)
                 let fileName = url.lastPathComponent
                 
                 do {
@@ -188,14 +213,31 @@ extension FilesViewController: UIDocumentPickerDelegate {
                     if let fileSize = fileAttributes[.size] as? Int64 {
                         let fileSizeString = ByteCountFormatter.string(fromByteCount: fileSize, countStyle: .file)
                         
-                        sections.append(PDFCellModel(image: pdfPageImage, name: fileName, size: fileSizeString, pdfPath: url))
-                        
-                        reloadData()
+                        if let pdfData = try? Data(contentsOf: url) {
+                            
+                            let newPDFFile = PDFCellModel(id: UUID().uuidString, image: pdfPageImage, name: fileName, size: fileSizeString, dateCreated: Date(), dataPDF: pdfData)
+                            
+                            sections.append(newPDFFile)
+                            filteredSections.append(newPDFFile)
+                            realmService.addNewItemModel(item: newPDFFile)
+                            reloadData()
+                        }
                     }
                 } catch {
                     print("pdf: - \(error)")
                 }
             }
         }
+    }
+}
+
+extension FilesViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            filteredSections = sections
+        } else {
+            filteredSections = sections.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+        }
+        reloadData()
     }
 }
